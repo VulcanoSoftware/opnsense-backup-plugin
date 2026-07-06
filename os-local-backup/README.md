@@ -7,8 +7,8 @@ This plugin provides a simple way to create and manage local configuration backu
 - **Automatic Daily Backups:** Configure a specific time for daily backups.
 - **Manual Backups:** Create a backup at any time from the web interface.
 - **Backup Management:** List, download, restore, and delete backups from the UI.
-- **Automatic Cleanup:** Automatically deletes the oldest backups when disk space on the backup path falls below a configurable threshold.
-- **Safety First:** Restoring a backup automatically triggers a system reboot to ensure the configuration is applied cleanly.
+- **Automatic Cleanup:** Automatically deletes the oldest backups when disk space on the backup path falls below a configurable threshold. This ensures the backup destination never runs out of space.
+- **Safety First:** Restoring a backup automatically triggers a system reboot to ensure the configuration is applied cleanly and all services are correctly initialized with the restored settings.
 
 ## Requirements
 
@@ -26,6 +26,7 @@ This plugin provides a simple way to create and manage local configuration backu
 - **Enable automatic backups:** Toggle the daily backup schedule.
 - **Hour/Minute:** Set the time for the automatic backup.
 - **Keep minimum free space (GB):** The plugin will ensure at least this much space remains on the backup disk by deleting old backups.
+- **Backup path:** Specify the absolute path to the backup directory. It is recommended to use a path that points to a separate physical disk or partition.
 
 ## License
 
