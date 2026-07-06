@@ -19,9 +19,9 @@ class ServiceController extends ApiControllerBase
     {
         if ($filename !== null) {
             $filename = basename($filename);
-            if (strpos($filename, 'config-') === 0 && strpos($filename, '.xml') !== false) {
+            if (str_starts_with($filename, 'config-') && str_ends_with($filename, '.xml')) {
                 $backend = new Backend();
-                $response = $backend->configdRun("localbackup restore ${filename}");
+                $response = $backend->configdRun("localbackup restore {$filename}");
                 return ["status" => $response];
             }
         }
@@ -32,16 +32,20 @@ class ServiceController extends ApiControllerBase
     {
         $backend = new Backend();
         $response = $backend->configdRun('localbackup list');
-        return json_decode($response, true);
+        $data = json_decode($response, true);
+        if ($data === null) {
+            return ["backups" => [], "count" => 0, "status" => "error"];
+        }
+        return $data;
     }
 
     public function deleteAction($filename = null)
     {
         if ($filename !== null) {
             $filename = basename($filename);
-            if (strpos($filename, 'config-') === 0 && strpos($filename, '.xml') !== false) {
+            if (str_starts_with($filename, 'config-') && str_ends_with($filename, '.xml')) {
                 $backend = new Backend();
-                $response = $backend->configdRun("localbackup delete ${filename}");
+                $response = $backend->configdRun("localbackup delete {$filename}");
                 return ["status" => $response];
             }
         }
@@ -53,7 +57,7 @@ class ServiceController extends ApiControllerBase
         $backend = new Backend();
         $model = new LocalBackup();
         $min_free = (string)$model->general->min_free_space ?: "10";
-        $response = $backend->configdRun("localbackup cleanup ${min_free}");
+        $response = $backend->configdRun("localbackup cleanup {$min_free}");
         return ["status" => $response];
     }
 
@@ -69,7 +73,7 @@ class ServiceController extends ApiControllerBase
         if ($filename !== null) {
             $filename = basename($filename);
             $filepath = "/backup/config/" . $filename;
-            if (file_exists($filepath) && strpos($filename, 'config-') === 0 && strpos($filename, '.xml') !== false) {
+            if (str_starts_with($filename, 'config-') && str_ends_with($filename, '.xml') && file_exists($filepath)) {
                 while (ob_get_level()) {
                     ob_end_clean();
                 }
