@@ -17,7 +17,7 @@ if [ -f "$BACKUP_FILE" ]; then
         echo "OK"
         exit 0
     else
-        logger -t local-backup "Error: Failed to delete backup $FILENAME"
+        logger -t local-backup "Error: Failed to delete backup $FILENAME (Return code: $?)"
         exit 1
     fi
 else

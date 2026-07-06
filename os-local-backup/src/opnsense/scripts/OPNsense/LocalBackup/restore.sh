@@ -20,12 +20,13 @@ fi
 # Restore config
 cp "$BACKUP_FILE" "$SOURCE_CONFIG"
 if [ $? -eq 0 ]; then
+    sync
     logger -t local-backup "Backup restored: $FILENAME. Rebooting..."
     echo "OK"
     # Schedule reboot
     /usr/local/sbin/configctl system reboot
     exit 0
 else
-    logger -t local-backup "Error: Failed to restore backup $FILENAME"
+    logger -t local-backup "Error: Failed to copy $BACKUP_FILE to $SOURCE_CONFIG (Return code: $?)"
     exit 1
 fi

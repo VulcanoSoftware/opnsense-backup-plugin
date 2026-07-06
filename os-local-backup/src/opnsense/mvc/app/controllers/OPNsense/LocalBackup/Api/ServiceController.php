@@ -18,12 +18,14 @@ class ServiceController extends ApiControllerBase
     public function restoreAction($filename = null)
     {
         if ($filename !== null) {
-            $backend = new Backend();
             $filename = basename($filename);
-            $response = $backend->configdRun("localbackup restore ${filename}");
-            return ["status" => $response];
+            if (strpos($filename, 'config-') === 0 && strpos($filename, '.xml') !== false) {
+                $backend = new Backend();
+                $response = $backend->configdRun("localbackup restore ${filename}");
+                return ["status" => $response];
+            }
         }
-        return ["status" => "error", "message" => "No filename provided"];
+        return ["status" => "error", "message" => "No filename provided or invalid filename"];
     }
 
     public function listAction()
@@ -36,12 +38,14 @@ class ServiceController extends ApiControllerBase
     public function deleteAction($filename = null)
     {
         if ($filename !== null) {
-            $backend = new Backend();
             $filename = basename($filename);
-            $response = $backend->configdRun("localbackup delete ${filename}");
-            return ["status" => $response];
+            if (strpos($filename, 'config-') === 0 && strpos($filename, '.xml') !== false) {
+                $backend = new Backend();
+                $response = $backend->configdRun("localbackup delete ${filename}");
+                return ["status" => $response];
+            }
         }
-        return ["status" => "error", "message" => "No filename provided"];
+        return ["status" => "error", "message" => "No filename provided or invalid filename"];
     }
 
     public function cleanupAction()
@@ -53,17 +57,28 @@ class ServiceController extends ApiControllerBase
         return ["status" => $response];
     }
 
+    public function reconfigureAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun('localbackup reconfigure');
+        return ["status" => $response];
+    }
+
     public function downloadAction($filename = null)
     {
         if ($filename !== null) {
             $filename = basename($filename);
             $filepath = "/backup/config/" . $filename;
-            if (file_exists($filepath)) {
-                $content = file_get_contents($filepath);
+            if (file_exists($filepath) && strpos($filename, 'config-') === 0 && strpos($filename, '.xml') !== false) {
+                while (ob_get_level()) {
+                    ob_end_clean();
+                }
                 header('Content-Type: application/xml');
                 header('Content-Disposition: attachment; filename="' . $filename . '"');
-                header('Content-Length: ' . strlen($content));
-                echo $content;
+                header('Content-Length: ' . filesize($filepath));
+                header('Pragma: public');
+                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                readfile($filepath);
                 exit;
             }
         }

@@ -21,6 +21,6 @@
         <id>general.min_free_space</id>
         <label>Keep minimum free space (GB)</label>
         <type>text</type>
-        <help>Minimum free space in GB to maintain on the backup pool. Oldest backups will be deleted if space is below this value.</help>
+        <help>Minimum free space in GB to maintain on the backup pool. Oldest backups will be deleted if space is below this value. Ensure /backup/config has enough space.</help>
     </field>
 </form>

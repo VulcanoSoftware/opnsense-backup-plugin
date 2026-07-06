@@ -29,7 +29,7 @@ while [ "$FREE_KB" -lt "$MIN_FREE_KB" ]; do
     if [ $? -eq 0 ]; then
         logger -t local-backup "Cleanup removed old backup: $FILENAME"
     else
-        logger -t local-backup "Error: Failed to remove old backup: $FILENAME"
+        logger -t local-backup "Error: Failed to remove old backup: $FILENAME (Return code: $?)"
         break
     fi
 

@@ -12,6 +12,7 @@ if [ ! -d "$BACKUP_DIR" ]; then
         logger -t local-backup "Error: Could not create backup directory $BACKUP_DIR"
         exit 1
     fi
+    chmod 755 "$BACKUP_DIR"
 fi
 
 # Check if source exists
@@ -23,10 +24,12 @@ fi
 # Copy config
 cp "$SOURCE_CONFIG" "$BACKUP_FILE"
 if [ $? -eq 0 ]; then
+    chmod 644 "$BACKUP_FILE"
+    sync
     logger -t local-backup "Backup created: $(basename $BACKUP_FILE)"
     echo "OK"
     exit 0
 else
-    logger -t local-backup "Error: Failed to create backup $(basename $BACKUP_FILE)"
+    logger -t local-backup "Error: Failed to copy $SOURCE_CONFIG to $BACKUP_FILE (Return code: $?)"
     exit 1
 fi
