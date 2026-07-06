@@ -1,7 +1,7 @@
 #!/bin/sh
 
-BACKUP_DIR="/backup/config"
-MIN_FREE_GB=${1:-10}
+BACKUP_DIR=${1:-"/backup/config"}
+MIN_FREE_GB=${2:-10}
 
 # Validate that MIN_FREE_GB is a positive integer
 if ! echo "$MIN_FREE_GB" | grep -qE '^[0-9]+$'; then

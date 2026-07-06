@@ -1,6 +1,6 @@
 <?php
 
-$backup_dir = "/backup/config";
+$backup_dir = $argv[1] ?? "/backup/config";
 $backups = [];
 
 if (is_dir($backup_dir)) {
@@ -25,8 +25,8 @@ array_walk($backups, function (&$item) {
 });
 
 // Get disk space info
-$total_space = disk_total_space($backup_dir) ?: 0;
-$free_space = disk_free_space($backup_dir) ?: 0;
+$total_space = is_dir($backup_dir) ? (disk_total_space($backup_dir) ?: 0) : 0;
+$free_space = is_dir($backup_dir) ? (disk_free_space($backup_dir) ?: 0) : 0;
 
 echo json_encode([
     "backups" => $backups,

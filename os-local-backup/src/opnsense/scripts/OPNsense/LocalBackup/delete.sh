@@ -1,13 +1,13 @@
 #!/bin/sh
 
-BACKUP_DIR="/backup/config"
+BACKUP_DIR=${1:-"/backup/config"}
 
-if [ -z "$1" ]; then
+if [ -z "$2" ]; then
     logger -t local-backup "Error: No backup filename provided for delete"
     exit 1
 fi
 
-FILENAME=$(basename "$1")
+FILENAME=$(basename "$2")
 BACKUP_FILE="${BACKUP_DIR}/${FILENAME}"
 
 if [ -f "$BACKUP_FILE" ]; then

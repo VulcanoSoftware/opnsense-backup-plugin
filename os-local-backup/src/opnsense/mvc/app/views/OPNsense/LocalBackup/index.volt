@@ -99,16 +99,25 @@
 
                     $("#grid-backups tbody").empty();
                     $.each(data.backups, function(index, backup) {
-                        var row = '<tr>';
-                        row += '<td>' + backup.filename + '</td>';
-                        row += '<td>' + (backup.size / 1024).toFixed(2) + ' KB</td>';
-                        row += '<td>' + backup.date + '</td>';
-                        row += '<td>';
-                        row += '<button class="btn btn-xs btn-default btn_download" data-filename="' + backup.filename + '"><i class="fa fa-download"></i></button> ';
-                        row += '<button class="btn btn-xs btn-default btn_restore" data-filename="' + backup.filename + '"><i class="fa fa-undo"></i></button> ';
-                        row += '<button class="btn btn-xs btn-default btn_delete" data-filename="' + backup.filename + '"><i class="fa fa-trash"></i></button>';
-                        row += '</td>';
-                        row += '</tr>';
+                        var row = $('<tr>');
+                        row.append($('<td>').text(backup.filename));
+                        row.append($('<td>').text((backup.size / 1024).toFixed(2) + ' KB'));
+                        row.append($('<td>').text(backup.date));
+
+                        var actions = $('<td>');
+                        actions.append($('<button class="btn btn-xs btn-default btn_download">')
+                            .attr('data-filename', backup.filename)
+                            .append($('<i class="fa fa-download"></i>')));
+                        actions.append(' ');
+                        actions.append($('<button class="btn btn-xs btn-default btn_restore">')
+                            .attr('data-filename', backup.filename)
+                            .append($('<i class="fa fa-undo"></i>')));
+                        actions.append(' ');
+                        actions.append($('<button class="btn btn-xs btn-default btn_delete">')
+                            .attr('data-filename', backup.filename)
+                            .append($('<i class="fa fa-trash"></i>')));
+
+                        row.append(actions);
                         $("#grid-backups tbody").append(row);
                     });
                 }
