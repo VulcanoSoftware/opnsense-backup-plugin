@@ -8,10 +8,17 @@ use OPNsense\LocalBackup\LocalBackup;
 
 class ServiceController extends ApiControllerBase
 {
+    private function getBackupPath()
+    {
+        $model = new LocalBackup();
+        return (string)$model->general->backup_path ?: "/backup/config";
+    }
+
     public function backupAction()
     {
         $backend = new Backend();
-        $response = $backend->configdRun('localbackup backup');
+        $path = $this->getBackupPath();
+        $response = $backend->configdRun("localbackup backup {$path}");
         return ["status" => $response];
     }
 
@@ -21,7 +28,8 @@ class ServiceController extends ApiControllerBase
             $filename = basename($filename);
             if (str_starts_with($filename, 'config-') && str_ends_with($filename, '.xml')) {
                 $backend = new Backend();
-                $response = $backend->configdRun("localbackup restore {$filename}");
+                $path = $this->getBackupPath();
+                $response = $backend->configdRun("localbackup restore {$path} {$filename}");
                 return ["status" => $response];
             }
         }
@@ -31,7 +39,8 @@ class ServiceController extends ApiControllerBase
     public function listAction()
     {
         $backend = new Backend();
-        $response = $backend->configdRun('localbackup list');
+        $path = $this->getBackupPath();
+        $response = $backend->configdRun("localbackup list {$path}");
         $data = json_decode($response, true);
         if ($data === null) {
             return ["backups" => [], "count" => 0, "status" => "error"];
@@ -45,7 +54,8 @@ class ServiceController extends ApiControllerBase
             $filename = basename($filename);
             if (str_starts_with($filename, 'config-') && str_ends_with($filename, '.xml')) {
                 $backend = new Backend();
-                $response = $backend->configdRun("localbackup delete {$filename}");
+                $path = $this->getBackupPath();
+                $response = $backend->configdRun("localbackup delete {$path} {$filename}");
                 return ["status" => $response];
             }
         }
@@ -57,7 +67,8 @@ class ServiceController extends ApiControllerBase
         $backend = new Backend();
         $model = new LocalBackup();
         $min_free = (string)$model->general->min_free_space ?: "10";
-        $response = $backend->configdRun("localbackup cleanup {$min_free}");
+        $path = $this->getBackupPath();
+        $response = $backend->configdRun("localbackup cleanup {$path} {$min_free}");
         return ["status" => $response];
     }
 
@@ -72,7 +83,8 @@ class ServiceController extends ApiControllerBase
     {
         if ($filename !== null) {
             $filename = basename($filename);
-            $filepath = "/backup/config/" . $filename;
+            $path = $this->getBackupPath();
+            $filepath = $path . "/" . $filename;
             if (str_starts_with($filename, 'config-') && str_ends_with($filename, '.xml') && file_exists($filepath)) {
                 while (ob_get_level()) {
                     ob_end_clean();

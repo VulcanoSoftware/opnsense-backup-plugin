@@ -24,6 +24,10 @@
                 <MinimumValue>1</MinimumValue>
                 <Required>Y</Required>
             </min_free_space>
+            <backup_path type="TextField">
+                <default>/backup/config</default>
+                <Required>Y</Required>
+            </backup_path>
         </general>
     </items>
 </model>

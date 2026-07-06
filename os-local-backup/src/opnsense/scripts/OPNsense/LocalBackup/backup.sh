@@ -1,6 +1,6 @@
 #!/bin/sh
 
-BACKUP_DIR="/backup/config"
+BACKUP_DIR=${1:-"/backup/config"}
 SOURCE_CONFIG="/conf/config.xml"
 DATE=$(date +%Y%m%d%H%M%S)
 BACKUP_FILE="${BACKUP_DIR}/config-${DATE}.xml"
@@ -12,7 +12,7 @@ if [ ! -d "$BACKUP_DIR" ]; then
         logger -t local-backup "Error: Could not create backup directory $BACKUP_DIR"
         exit 1
     fi
-    chmod 755 "$BACKUP_DIR"
+    chmod 750 "$BACKUP_DIR"
 fi
 
 # Check if source exists
@@ -24,9 +24,9 @@ fi
 # Copy config
 cp "$SOURCE_CONFIG" "$BACKUP_FILE"
 if [ $? -eq 0 ]; then
-    chmod 644 "$BACKUP_FILE"
+    chmod 600 "$BACKUP_FILE"
     sync
-    logger -t local-backup "Backup created: $(basename $BACKUP_FILE)"
+    logger -t local-backup "Backup created: $(basename $BACKUP_FILE) in $BACKUP_DIR"
     echo "OK"
     exit 0
 else
