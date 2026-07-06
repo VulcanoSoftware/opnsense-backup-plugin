@@ -1,0 +1,2 @@
+This plugin allows for local configuration backups to be stored on a dedicated backup path (/backup/config).
+It includes automatic daily backups, manual backup/restore/delete actions, and automatic cleanup to maintain free disk space.

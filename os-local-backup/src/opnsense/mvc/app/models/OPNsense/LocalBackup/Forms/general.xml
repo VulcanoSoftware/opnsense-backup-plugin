@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable automatic backups</label>
+        <type>checkbox</type>
+        <help>Enable daily automatic configuration backups.</help>
+    </field>
+    <field>
+        <id>general.hour</id>
+        <label>Hour</label>
+        <type>text</type>
+        <help>Hour of the day to perform the backup (0-23).</help>
+    </field>
+    <field>
+        <id>general.minute</id>
+        <label>Minute</label>
+        <type>text</type>
+        <help>Minute of the hour to perform the backup (0-59).</help>
+    </field>
+    <field>
+        <id>general.min_free_space</id>
+        <label>Keep minimum free space (GB)</label>
+        <type>text</type>
+        <help>Minimum free space in GB to maintain on the backup pool. Oldest backups will be deleted if space is below this value.</help>
+    </field>
+</form>

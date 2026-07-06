@@ -1,0 +1,9 @@
+<acl>
+    <OPNsenseLocalBackup>
+        <description>Allow access to the Local Backup plugin</description>
+        <patterns>
+            <pattern>ui/localbackup/*</pattern>
+            <pattern>api/localbackup/*</pattern>
+        </patterns>
+    </OPNsenseLocalBackup>
+</acl>

@@ -1,0 +1,8 @@
+<menu>
+    <System>
+        <LocalBackups order="100">
+            <url>/ui/localbackup/index</url>
+            <label>Local Backups</label>
+        </LocalBackups>
+    </System>
+</menu>

@@ -1,0 +1,16 @@
+etc/inc/plugins.inc.d/localbackup.inc
+opnsense/mvc/app/controllers/OPNsense/LocalBackup/IndexController.php
+opnsense/mvc/app/controllers/OPNsense/LocalBackup/Api/SettingsController.php
+opnsense/mvc/app/controllers/OPNsense/LocalBackup/Api/ServiceController.php
+opnsense/mvc/app/models/OPNsense/LocalBackup/LocalBackup.xml
+opnsense/mvc/app/models/OPNsense/LocalBackup/Forms/general.xml
+opnsense/mvc/app/models/OPNsense/LocalBackup/LocalBackup.php
+opnsense/mvc/app/models/OPNsense/LocalBackup/ACL/ACL.xml
+opnsense/mvc/app/models/OPNsense/LocalBackup/Menu/Menu.xml
+opnsense/mvc/app/views/OPNsense/LocalBackup/index.volt
+opnsense/service/conf/actions.d/actions_localbackup.conf
+opnsense/scripts/OPNsense/LocalBackup/restore.sh
+opnsense/scripts/OPNsense/LocalBackup/list_backups.php
+opnsense/scripts/OPNsense/LocalBackup/backup.sh
+opnsense/scripts/OPNsense/LocalBackup/delete.sh
+opnsense/scripts/OPNsense/LocalBackup/cleanup.sh
