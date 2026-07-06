@@ -26,7 +26,7 @@ cp "$SOURCE_CONFIG" "$BACKUP_FILE"
 if [ $? -eq 0 ]; then
     chmod 600 "$BACKUP_FILE"
     sync
-    logger -t local-backup "Backup created: $(basename $BACKUP_FILE) in $BACKUP_DIR"
+    logger -t local-backup "Backup created: $(basename "$BACKUP_FILE") in $BACKUP_DIR"
     echo "OK"
     exit 0
 else
