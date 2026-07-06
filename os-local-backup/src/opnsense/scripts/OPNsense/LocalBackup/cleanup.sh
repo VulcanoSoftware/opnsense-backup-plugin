@@ -2,6 +2,13 @@
 
 BACKUP_DIR="/backup/config"
 MIN_FREE_GB=${1:-10}
+
+# Validate that MIN_FREE_GB is a positive integer
+if ! echo "$MIN_FREE_GB" | grep -qE '^[0-9]+$'; then
+    logger -t local-backup "Cleanup Error: Invalid minimum free space value '$MIN_FREE_GB'. Defaulting to 10GB."
+    MIN_FREE_GB=10
+fi
+
 MIN_FREE_KB=$((MIN_FREE_GB * 1024 * 1024))
 
 if [ ! -d "$BACKUP_DIR" ]; then
