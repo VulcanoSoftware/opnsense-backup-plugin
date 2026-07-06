@@ -43,7 +43,7 @@
             <div class="col-xs-12">
                 <div class="pull-right">
                     <button class="btn btn-primary" id="btn_backup_now" type="button">
-                        <b>{{ lang._('Create backup now') }}</b> <i class="fa fa-plus"></i>
+                        <b>{{ lang._('Create backup now') }}</b> <i id="btn_backup_now_progress" class="fa fa-plus"></i>
                     </button>
                     <button class="btn btn-default" id="btn_refresh" type="button">
                         <b>{{ lang._('Refresh') }}</b> <i class="fa fa-refresh"></i>
@@ -134,12 +134,23 @@
 
         $("#btn_save").click(function() {
             saveFormToEndpoint("/api/localbackup/settings/set", 'form_general', function() {
-                updateStatus();
+                ajaxCall("/api/localbackup/service/reconfigure", {}, function(data, status) {
+                    updateStatus();
+                });
             });
         });
 
         $("#btn_backup_now").click(function() {
+            $("#btn_backup_now_progress").addClass("fa-spinner fa-pulse").removeClass("fa-plus");
             ajaxCall("/api/localbackup/service/backup", {}, function(data, status) {
+                $("#btn_backup_now_progress").addClass("fa-plus").removeClass("fa-spinner fa-pulse");
+                if (data.status != "OK") {
+                    BootstrapDialog.show({
+                        type: BootstrapDialog.TYPE_DANGER,
+                        title: '{{ lang._('Backup') }}',
+                        message: '{{ lang._('Error creating backup') }}'
+                    });
+                }
                 updateStatus();
             });
         });
@@ -161,6 +172,13 @@
                 callback: function(result) {
                     if (result) {
                         ajaxCall("/api/localbackup/service/delete/" + filename, {}, function(data, status) {
+                            if (data.status != "OK") {
+                                BootstrapDialog.show({
+                                    type: BootstrapDialog.TYPE_DANGER,
+                                    title: '{{ lang._('Delete') }}',
+                                    message: '{{ lang._('Error deleting backup') }}'
+                                });
+                            }
                             updateStatus();
                         });
                     }
