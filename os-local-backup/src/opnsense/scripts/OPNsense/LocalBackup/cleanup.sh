@@ -26,7 +26,7 @@ while [ "$FREE_KB" -lt "$MIN_FREE_KB" ]; do
     # Find oldest backup
     OLDEST=$(ls -tr "${BACKUP_DIR}"/config-*.xml 2>/dev/null | head -1)
 
-    if [ -z "$OLDEST" ]; then
+    if [ -z "$OLDEST" ] || [ ! -f "$OLDEST" ]; then
         logger -t local-backup "Cleanup: No more backups to delete, but space is still low."
         break
     fi

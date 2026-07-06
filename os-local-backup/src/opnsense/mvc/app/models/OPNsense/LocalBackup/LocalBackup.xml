@@ -26,6 +26,8 @@
             </min_free_space>
             <backup_path type="TextField">
                 <default>/backup/config</default>
+                <Mask>/^\/.*$/</Mask>
+                <ValidationMessage>Please provide a valid absolute path.</ValidationMessage>
                 <Required>Y</Required>
             </backup_path>
         </general>

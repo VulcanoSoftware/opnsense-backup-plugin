@@ -18,7 +18,7 @@ class ServiceController extends ApiControllerBase
     {
         $backend = new Backend();
         $path = $this->getBackupPath();
-        $response = $backend->configdRun("localbackup backup {$path}");
+        $response = $backend->configdRun("localbackup backup " . escapeshellarg($path));
         return ["status" => $response];
     }
 
@@ -29,7 +29,7 @@ class ServiceController extends ApiControllerBase
             if (str_starts_with($filename, 'config-') && str_ends_with($filename, '.xml')) {
                 $backend = new Backend();
                 $path = $this->getBackupPath();
-                $response = $backend->configdRun("localbackup restore {$path} {$filename}");
+                $response = $backend->configdRun("localbackup restore " . escapeshellarg($path) . " " . escapeshellarg($filename));
                 return ["status" => $response];
             }
         }
@@ -40,7 +40,7 @@ class ServiceController extends ApiControllerBase
     {
         $backend = new Backend();
         $path = $this->getBackupPath();
-        $response = $backend->configdRun("localbackup list {$path}");
+        $response = $backend->configdRun("localbackup list " . escapeshellarg($path));
         $data = json_decode($response, true);
         if ($data === null) {
             return ["backups" => [], "count" => 0, "status" => "error"];
@@ -55,7 +55,7 @@ class ServiceController extends ApiControllerBase
             if (str_starts_with($filename, 'config-') && str_ends_with($filename, '.xml')) {
                 $backend = new Backend();
                 $path = $this->getBackupPath();
-                $response = $backend->configdRun("localbackup delete {$path} {$filename}");
+                $response = $backend->configdRun("localbackup delete " . escapeshellarg($path) . " " . escapeshellarg($filename));
                 return ["status" => $response];
             }
         }
@@ -68,7 +68,7 @@ class ServiceController extends ApiControllerBase
         $model = new LocalBackup();
         $min_free = (string)$model->general->min_free_space ?: "10";
         $path = $this->getBackupPath();
-        $response = $backend->configdRun("localbackup cleanup {$path} {$min_free}");
+        $response = $backend->configdRun("localbackup cleanup " . escapeshellarg($path) . " " . escapeshellarg($min_free));
         return ["status" => $response];
     }
 

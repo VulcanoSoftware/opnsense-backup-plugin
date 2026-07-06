@@ -9,7 +9,7 @@ function localbackup_cron_jobs()
         $path = (string)$model->general->backup_path ?: "/backup/config";
         $jobs[] = array(
             "description" => "Local configuration backup",
-            "command" => "localbackup backup " . $path,
+            "command" => "localbackup backup " . escapeshellarg($path),
             "minute" => (string)$model->general->minute,
             "hour" => (string)$model->general->hour,
             "day" => "*",
@@ -26,7 +26,7 @@ function localbackup_cron_jobs()
 
         $jobs[] = array(
             "description" => "Local backup cleanup",
-            "command" => "localbackup cleanup " . $path . " " . $min_free,
+            "command" => "localbackup cleanup " . escapeshellarg($path) . " " . escapeshellarg($min_free),
             "minute" => (string)$cleanup_minute,
             "hour" => (string)$cleanup_hour,
             "day" => "*",
